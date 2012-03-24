@@ -11,6 +11,7 @@ require 'uri'
 require 'pp'
 require 'twitter'
 require 'oauth'
+require 'socket'
 
 require 'view'
 require 'model'
