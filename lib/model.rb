@@ -5,7 +5,6 @@ module Model
   def self.say(text)
     begin
       sock = TCPSocket.open($const.GW_SERVER, $const.GW_PORT)
-      p sock
     rescue
       puts "socket.open failed : #$!\n"
     else

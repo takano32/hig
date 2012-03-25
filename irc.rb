@@ -25,9 +25,12 @@ t = Thread.new do
 end
 t.run
 
-server = TCPServer.open(GW_PORT)
+server = Socket.new(Socket::AF_INET, Socket::SOCK_STREAM, 0)
+sockaddr = Socket.sockaddr_in(GW_PORT, "127.0.0.1")
+server.bind(sockaddr)
+server.listen(5)
 while true
-  sock = server.accept
+  sock, sockaddr = server.accept
 
   while buf = sock.gets
     bot.irc.send("PRIVMSG #{CHANNEL} :#{buf}")
