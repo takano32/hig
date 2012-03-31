@@ -1,5 +1,11 @@
 module Model
-  def self.connect(session)
+  def self.connect
+    @@db = Sequel.sqlite($const.DB_NAME)
+  end
+
+  def self.posts
+    prevtime = Time.now - $const.INTERVAL
+    @@db["select * from posts where time>='#{prevtime}'"]
   end
 
   def self.say(text)

@@ -2,12 +2,28 @@
 require 'rubygems'
 require 'cinch'
 require 'socket'
+require "rubygems"
+require "sequel"
 
 IRC_SERVER = "127.0.0.1"
 IRC_PORT = 16667
 GW_PORT = 44444
 NICKNAME = "hishow_"
 CHANNEL = "#hixi-test"
+DB_NAME = "hig.db"
+
+DB = Sequel.sqlite(DB_NAME)
+begin
+  DB.create_table :posts do
+    primary_key :id
+    Time :time
+    String :user
+    String :text
+  end
+rescue
+  "DB already exists."
+end
+posts = DB[:posts]
 
 bot = Cinch::Bot.new do
   configure do |c|
@@ -17,6 +33,12 @@ bot = Cinch::Bot.new do
     c.realname = NICKNAME
     c.user = NICKNAME
     c.channels = [CHANNEL]
+  end
+
+  on :message do |m|
+    unless m.user == NICKNAME
+      posts.insert(:time => m.time, :user => "#{m.user}", :text => "#{m.message}")
+    end
   end
 end
 

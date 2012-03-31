@@ -5,9 +5,13 @@ module View
   end
 
   def self.list
+    get '/' do
+      connect
+      erb :list
+    end
+
     post '/' do
       Model.say(params[:text])
-      erb :list
     end
   end
 end
