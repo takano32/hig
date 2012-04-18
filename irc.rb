@@ -11,6 +11,7 @@ opts = Slop.parse do
   on :g, :gw_port=, 4444
   on :n, :nickname=, "hishow_"
   on :c, :channel=, "#hixi-test"
+  on :r, :remote=, "127.0.0.1:4567"
 end
 
 bot = Cinch::Bot.new do
@@ -21,6 +22,13 @@ bot = Cinch::Bot.new do
     c.realname = opts[:nickname]
     c.user = opts[:nickname]
     c.channels = [opts[:channel]]
+  end
+  
+  on :message do |m|
+    unless m.user == opts[:nickname]
+      `curl -d "text=(#{m.user}) #{m.message}" http://#{opts[:remote]}/`
+      #posts.insert(:time => m.time, :user => "#{m.user}", :text => "#{m.message}")
+    end
   end
 end
 
