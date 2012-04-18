@@ -12,7 +12,6 @@ require 'pp'
 require 'twitter'
 require 'oauth'
 require 'socket'
-require 'sequel'
 
 require 'view'
 require 'model'
@@ -25,6 +24,6 @@ set :public_folder, File.dirname(__FILE__) + '/public'
 
 helpers do
   def connect
-    Model.connect
+    #Model.connect
   end
 end
